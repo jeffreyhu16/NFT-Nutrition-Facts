@@ -3,7 +3,9 @@
   --clr-border: #ffffff1a;
 }
 
-*, ::before, ::after {
+*,
+::before,
+::after {
   box-sizing: border-box;
 }
 
@@ -13,6 +15,12 @@ body {
   margin: 0;
   color: #fff;
   font-family: 'Manrope', sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
 }
 
 button {
