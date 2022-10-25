@@ -1,5 +1,5 @@
 import styles from '../styles/Navbar.module.css'
-import Image from 'next/image';
+import Image from 'next/image'
 
 const Navbar = () => {
   return (
