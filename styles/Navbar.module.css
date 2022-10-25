@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 2.4em 3em;
+}
+
+.btn {
+  font-size: 1.125rem;
+  font-weight: 600;
+  padding: 0.5em 2em;
+  border-radius: 3.25em;
+  background-image: var(--clr-texture);
+  border: 1px solid var(--clr-border);
+}

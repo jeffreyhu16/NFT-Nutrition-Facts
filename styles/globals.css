@@ -1,3 +1,8 @@
+:root {
+  --clr-texture: linear-gradient(#77d6ff14, #caa9ff14);
+  --clr-border: #ffffff1a;
+}
+
 *, ::before, ::after {
   box-sizing: border-box;
 }
@@ -7,5 +12,14 @@ body {
   padding: 0;
   margin: 0;
   color: #fff;
+  font-family: 'Manrope', sans-serif;
+}
+
+button {
+  outline: none;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  background: transparent;
   font-family: 'Manrope', sans-serif;
 }
