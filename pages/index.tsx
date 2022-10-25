@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Label from '../components/Label'
+import Navbar from '../components/Navbar'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
@@ -14,6 +15,7 @@ const Home: NextPage = () => {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='true' />
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
+      <Navbar />
       <Label />
       <div className={styles.background}></div>
       <div className={styles.gradient}></div>
