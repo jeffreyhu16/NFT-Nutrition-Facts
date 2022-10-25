@@ -23,3 +23,7 @@ button {
   background: transparent;
   font-family: 'Manrope', sans-serif;
 }
+
+input {
+  all: unset;
+}
