@@ -51,6 +51,8 @@
 .content {}
 
 .contentCheck {
-  border-top: 2px dotted #ffffff50;
+  display: flex;
+  justify-content: space-between;
   padding: 0.5em 0;
+  border-top: 2px dotted #ffffff50;
 }

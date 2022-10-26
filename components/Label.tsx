@@ -100,12 +100,15 @@ const Label = () => {
         <div className={styles.content}>
           <div className={styles.contentCheck}>
             <h3>Contract Verification</h3>
+            <Image src='/green-check.svg' width={26} height={26} />
           </div>
           <div className={styles.contentCheck}>
             <h3>Contract Ownership</h3>
+            <Image src='/red-cross.svg' width={26} height={26} />
           </div>
           <div className={styles.contentCheck}>
             <h3>Metadata Storage</h3>
+            <Image src='/yellow-warning.png' width={26} height={26 } />
           </div>
           <div className={styles.contentCheck}>
             <h3>Media Storage</h3>
