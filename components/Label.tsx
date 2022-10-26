@@ -1,11 +1,13 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 import styles from '../styles/Label.module.css'
 import { ethers } from 'ethers'
+import Image from 'next/image'
 
 const Label = () => {
 
   const [input, setInput] = useState<string>('');
   const [subHeader, setSubHeader] = useState<string>('');
+  const [nftLogo, setNftLogo] = useState<string>('');
 
   const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -16,6 +18,8 @@ const Label = () => {
 
     const isVerified = await verifyContract();
     console.log(isVerified)
+
+    await getNftLogo();
   }
 
   const ERC721_INTERFACE_ID = '0x80ac58cd';
@@ -36,16 +40,40 @@ const Label = () => {
       const contract = new ethers.Contract(input, data.result, provider);
       const is721 = await contract.supportsInterface(ERC721_INTERFACE_ID);
       const is1155 = await contract.supportsInterface(ERC1155_INTERFACE_ID);
-      
+
       if (is721) {
         const name = await contract.name();
         const symbol = await contract.symbol();
         setSubHeader(`${name} (${symbol})`);
       }
-
       return data.status === '1' ? true : false;
+
     } catch (err) {
-      console.log(err)
+      console.log(err);
+    }
+  }
+
+  const getNftLogo = async () => {
+    const baseURL = 'https://svc.blockdaemon.com/nft/v1';
+    try {
+      const res = await fetch(
+        `${baseURL}/ethereum/mainnet/collection` +
+        `?contract_address=${input}` +
+        `&apiKey=${process.env.NEXT_PUBLIC_BLOCKDAEMON_API_KEY}`
+      );
+      const data = await res.json();
+      const logoURL = `${baseURL}/ethereum/mainnet/media/${data.collection.logo}`;
+
+      await fetch(logoURL, {
+        method: 'get',
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_BLOCKDAEMON_API_KEY}`
+        }
+      });
+      setNftLogo(logoURL);
+
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -65,7 +93,10 @@ const Label = () => {
       </form>
       <div className={styles.label}>
         <h1 className={styles.header}>NFT Nutrition</h1>
-        <h2 className={styles.subHeader}>{subHeader}</h2>
+        <div className={styles.subHeaderGroup}>
+          <h2 className={styles.subHeaderText}>{subHeader}</h2>
+          {nftLogo && <Image src={nftLogo} unoptimized width={48} height={48} />}
+        </div>
       </div>
     </div>
   );
