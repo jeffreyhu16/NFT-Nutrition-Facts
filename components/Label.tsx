@@ -9,6 +9,8 @@ const Label = () => {
   const [subHeader, setSubHeader] = useState<string>('');
   const [nftLogo, setNftLogo] = useState<string>('');
 
+  const [isVerified, setIsVerified] = useState<boolean>(false);
+
   const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   }
@@ -16,9 +18,7 @@ const Label = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const isVerified = await verifyContract();
-    console.log(isVerified)
-
+    await verifyContract();
     await getNftLogo();
   }
 
@@ -46,7 +46,8 @@ const Label = () => {
         const symbol = await contract.symbol();
         setSubHeader(`${name} (${symbol})`);
       }
-      return data.status === '1' ? true : false;
+      const isVerified = data.status === '1' ? true : false;
+      setIsVerified(isVerified);
 
     } catch (err) {
       console.log(err);
@@ -100,7 +101,7 @@ const Label = () => {
         <div className={styles.content}>
           <div className={styles.contentCheck}>
             <h3>Contract Verification</h3>
-            <Image src='/green-check.svg' width={26} height={26} />
+            <Image src={isVerified ? '/green-check.svg' : '/red-cross.svg'} width={26} height={26} />
           </div>
           <div className={styles.contentCheck}>
             <h3>Contract Ownership</h3>
