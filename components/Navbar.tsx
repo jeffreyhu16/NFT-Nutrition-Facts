@@ -4,7 +4,7 @@ import Image from 'next/image'
 const Navbar = () => {
   return (
     <nav className={styles.container}>
-      <Image src='/logo.svg' width={220} height={32} />
+      <Image src='/logo.svg' priority width={220} height={32} />
       <button className={styles.btn}>Choose Network</button>
     </nav>
   );
