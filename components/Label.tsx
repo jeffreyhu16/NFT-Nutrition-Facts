@@ -95,7 +95,7 @@ const Label = () => {
         <h1 className={styles.header}>NFT Nutrition Facts</h1>
         <div className={styles.subHeaderGroup}>
           <h2 className={styles.subHeaderText}>{subHeader}</h2>
-          {nftLogo && <Image src={nftLogo} unoptimized width={48} height={48} />}
+          {nftLogo && <Image src={nftLogo} unoptimized width={36} height={36} />}
         </div>
         <div className={styles.content}>
           <div className={styles.contentCheck}>
