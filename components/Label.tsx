@@ -92,10 +92,24 @@ const Label = () => {
         />
       </form>
       <div className={styles.label}>
-        <h1 className={styles.header}>NFT Nutrition</h1>
+        <h1 className={styles.header}>NFT Nutrition Facts</h1>
         <div className={styles.subHeaderGroup}>
           <h2 className={styles.subHeaderText}>{subHeader}</h2>
           {nftLogo && <Image src={nftLogo} unoptimized width={48} height={48} />}
+        </div>
+        <div className={styles.content}>
+          <div className={styles.contentCheck}>
+            <h3>Contract Verification</h3>
+          </div>
+          <div className={styles.contentCheck}>
+            <h3>Contract Ownership</h3>
+          </div>
+          <div className={styles.contentCheck}>
+            <h3>Metadata Storage</h3>
+          </div>
+          <div className={styles.contentCheck}>
+            <h3>Media Storage</h3>
+          </div>
         </div>
       </div>
     </div>

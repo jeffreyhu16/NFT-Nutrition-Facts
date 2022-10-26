@@ -29,6 +29,7 @@
   border-radius: 0.375rem;
   border: 1px solid var(--clr-border);
   background-image: var(--clr-texture);
+  height: 25rem;
 }
 
 .header {
@@ -39,9 +40,17 @@
 .subHeaderGroup {
   display: flex;
   align-items: center;
+  margin-bottom: 2em;
 }
 
 .subHeaderText {
   font-size: 1.2rem;
   margin-right: 0.4em;
+}
+
+.content {}
+
+.contentCheck {
+  border-top: 2px dotted #ffffff50;
+  padding: 0.5em 0;
 }
