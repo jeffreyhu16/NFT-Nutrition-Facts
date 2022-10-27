@@ -58,9 +58,9 @@ export const NftProvider = ({ children }: NftProviderProps) => {
         setStandard('ERC1155');
       }
       setStatus(data.status);
-      
+
     } catch (err) {
-      console.log(err);
+      console.log(err); // must add additional error handling
     }
   }
 
