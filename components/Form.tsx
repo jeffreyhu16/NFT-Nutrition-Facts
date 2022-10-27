@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useContext, useState } from 'react'
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react'
 import { NftContext } from '../contexts/NftContext'
 import { CheckContext } from '../contexts/CheckContext'
 import styles from '../styles/Form.module.css'
@@ -6,7 +6,7 @@ import styles from '../styles/Form.module.css'
 const Form = () => {
 
   const nftCtx = useContext(NftContext)!;
-  const { getNftContract, getNftLogo } = nftCtx;
+  const { getNftContract, getNftLogo, status } = nftCtx;
 
   const checkCtx = useContext(CheckContext)!;
   const { checkIsVerified } = checkCtx;
@@ -20,10 +20,15 @@ const Form = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const status = await getNftContract(input);
+    getNftContract(input);
     getNftLogo(input);
-    checkIsVerified(status!);
   }
+
+  useEffect(() => {
+    if (status !== '') {
+      checkIsVerified(status);
+    }
+  }, [status]);
 
   return (
     <form

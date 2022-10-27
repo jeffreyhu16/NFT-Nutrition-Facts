@@ -17,7 +17,6 @@ export const CheckProvider = ({ children }: CheckProviderProps) => {
   const [isVerified, setIsVerified] = useState<boolean>(false);
 
   const checkIsVerified = (status: string) => {
-    console.log(status)
     if (status === '1') {
       setIsVerified(true);
     } else {

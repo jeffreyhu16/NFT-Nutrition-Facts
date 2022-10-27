@@ -5,7 +5,7 @@ export interface NftContextInterface {
   contract: ethers.Contract | undefined,
   standard: string,
   status: string,
-  getNftContract: (address: string) => Promise<string | void>,
+  getNftContract: (address: string) => void,
   collection: string,
   logoURL: string,
   setCollection: Dispatch<SetStateAction<string>>,
@@ -57,8 +57,8 @@ export const NftProvider = ({ children }: NftProviderProps) => {
       } else if (is1155) {
         setStandard('ERC1155');
       }
-      return data.status;
-
+      setStatus(data.status);
+      
     } catch (err) {
       console.log(err);
     }
