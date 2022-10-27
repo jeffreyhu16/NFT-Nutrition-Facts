@@ -1,7 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Label from '../components/Label'
 import Navbar from '../components/Navbar'
+import Form from '../components/Form'
+import Label from '../components/Label'
 import styles from '../styles/Home.module.css'
 import { MetaMaskInpageProvider } from '@metamask/providers'
 import { ethers } from 'ethers'
@@ -19,7 +20,10 @@ const Home: NextPage = () => {
         <title>Nutrition Label</title>
       </Head>
       <Navbar />
-      <Label />
+      <div className={styles.labelContainer}>
+        <Form />
+        <Label />
+      </div>
       <div className={styles.background}></div>
       <div className={styles.gradient}></div>
     </div>
