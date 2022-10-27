@@ -1,15 +1,20 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import { Network, Alchemy } from 'alchemy-sdk'
 import { ethers } from 'ethers';
 
 export interface NftContextInterface {
   contract: ethers.Contract | undefined,
-  standard: string,
   status: string,
+  collection: string | undefined,
+  logoURL: string | undefined,
+  imageURL: string | undefined,
+  tokenURI: string | undefined,
+  setCollection: Dispatch<SetStateAction<string | undefined>>,
+  setLogoURL: Dispatch<SetStateAction<string | undefined>>,
+  setImageURL: Dispatch<SetStateAction<string | undefined>>,
+  setTokenURI: Dispatch<SetStateAction<string | undefined>>,
   getNftContract: (address: string) => void,
-  collection: string,
-  logoURL: string,
-  setCollection: Dispatch<SetStateAction<string>>,
-  setLogoURL: Dispatch<SetStateAction<string>>,
+  getNftData: (address: string) => void,
   getNftLogo: (address: string) => void,
 }
 
@@ -22,15 +27,14 @@ type NftProviderProps = {
 export const NftProvider = ({ children }: NftProviderProps) => {
 
   const [contract, setContract] = useState<ethers.Contract>();
-  const [standard, setStandard] = useState<string>('');
   const [status, setStatus] = useState<string>('');
 
-  const [collection, setCollection] = useState<string>('');
-  const [logoURL, setLogoURL] = useState<string>('');
+  const [collection, setCollection] = useState<string>();
+  const [logoURL, setLogoURL] = useState<string>();
+  const [imageURL, setImageURL] = useState<string>();
+  const [tokenURI, setTokenURI] = useState<string>();
 
   const getNftContract = async (address: string) => {
-    const ERC721_INTERFACE_ID = '0x80ac58cd';
-    const ERC1155_INTERFACE_ID = '0xd9b67a26';
     try {
       // get verified contract abi
       const res = await fetch(
@@ -44,23 +48,32 @@ export const NftProvider = ({ children }: NftProviderProps) => {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const contract = new ethers.Contract(address, data.result, provider);
-      const is721 = await contract.supportsInterface(ERC721_INTERFACE_ID);
-      const is1155 = await contract.supportsInterface(ERC1155_INTERFACE_ID);
 
       setContract(contract);
-      
-      if (is721) {
-        setStandard('ERC721');
-        const name = await contract.name();
-        const symbol = await contract.symbol();
-        setCollection(`${name} (${symbol})`);
-      } else if (is1155) {
-        setStandard('ERC1155');
-      }
       setStatus(data.status);
 
     } catch (err) {
       console.log(err); // must add additional error handling
+    }
+  }
+
+  const getNftData = async (address: string) => {
+    try {
+      const settings = {
+        apiKey: process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_API_KEY,
+        network: Network.ETH_MAINNET
+      }
+      const alchemy = new Alchemy(settings);
+      const nft = await alchemy.nft.getNftMetadata(address, '1');
+      const { contract, rawMetadata, tokenUri } = nft;
+
+      setCollection(`${contract.name} (${contract.symbol})`);
+      setImageURL(rawMetadata?.image)
+      setTokenURI(tokenUri?.raw);
+      console.log(nft)
+      
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -94,13 +107,17 @@ export const NftProvider = ({ children }: NftProviderProps) => {
 
   const providerValue = {
     contract,
-    standard,
     status,
-    getNftContract,
     collection,
     logoURL,
+    imageURL,
+    tokenURI,
     setCollection,
     setLogoURL,
+    setImageURL,
+    setTokenURI,
+    getNftContract,
+    getNftData,
     getNftLogo,
   }
 
