@@ -9,7 +9,7 @@ const Form = () => {
   const { getNftContract, getNftData, getNftLogo, status, tokenURI, imageURL } = nftCtx;
 
   const checkCtx = useContext(CheckContext)!;
-  const { checkIsVerified, checkMetaSource, checkMediaSource } = checkCtx;
+  const { checkIsVerified, checkNftSource } = checkCtx;
 
   const [input, setInput] = useState<string>('');
 
@@ -25,11 +25,11 @@ const Form = () => {
     getNftLogo(input);
   }
 
-  useEffect(() => { // did not check after second search //
+  useEffect(() => { 
     if (status && tokenURI && imageURL) {
       checkIsVerified(status);
-      checkMetaSource(tokenURI);
-      checkMediaSource(imageURL);
+      checkNftSource(tokenURI, 'metadata');
+      checkNftSource(imageURL, 'media');
     }
   }, [status, tokenURI, imageURL]); 
 
