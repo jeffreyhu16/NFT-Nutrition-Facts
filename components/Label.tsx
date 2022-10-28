@@ -10,7 +10,7 @@ const Label = () => {
   const { collection, logoURL } = nftCtx;
 
   const checkCtx = useContext(CheckContext)!;
-  const { isVerified, nftSource } = checkCtx;
+  const { isVerified, nftSource, isSpam } = checkCtx;
   // console.log(nftSource)
   return (
     <div className={styles.container}>
@@ -53,6 +53,16 @@ const Label = () => {
           {nftSource?.media &&
             <Image
               src={nftSource.media.isSecure ? '/green-check.svg' : '/red-cross.svg'}
+              width={26}
+              height={26}
+            />
+          }
+        </div>
+        <div className={styles.contentCheck}>
+          <h3>Relevance</h3>
+          {isSpam !== undefined &&
+            <Image
+              src={isSpam ? '/red-cross.svg' : '/green-check.svg'}
               width={26}
               height={26}
             />

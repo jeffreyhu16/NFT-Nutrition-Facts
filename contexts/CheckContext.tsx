@@ -1,4 +1,5 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react'
+import { Alchemy, Network } from 'alchemy-sdk'
 import { ethers } from 'ethers'
 
 type Source = {
@@ -11,9 +12,11 @@ type Source = {
 export interface CheckContextInterface {
   isVerified: boolean | undefined,
   nftSource: Source | undefined,
+  isSpam: boolean | undefined,
   setIsVerified: Dispatch<SetStateAction<boolean | undefined>>,
   checkIsVerified: (status: string) => void,
   checkNftSource: (URI: string, type: string) => void,
+  checkRelevance: (address: string) => void,
 }
 
 export const CheckContext = createContext<CheckContextInterface | null>(null);
@@ -26,6 +29,7 @@ export const CheckProvider = ({ children }: CheckProviderProps) => {
 
   const [isVerified, setIsVerified] = useState<boolean>();
   const [nftSource, setNftSource] = useState<Source>();
+  const [isSpam, setIsSpam] = useState<boolean>();
   const sources = ['ipfs', 'arweave', 'data:'];
 
   const checkIsVerified = (status: string) => {
@@ -68,12 +72,24 @@ export const CheckProvider = ({ children }: CheckProviderProps) => {
     }
   }
 
+  const checkRelevance = async (address: string) => {
+    const settings = {
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_API_KEY,
+      network: Network.ETH_MAINNET
+    }
+    const alchemy = new Alchemy(settings);
+    const isSpam = await alchemy.nft.isSpamContract(address);
+    setIsSpam(isSpam);
+  }
+
   const providerValue = {
     isVerified,
     nftSource,
+    isSpam,
     setIsVerified,
     checkIsVerified,
     checkNftSource,
+    checkRelevance,
   }
 
   return (

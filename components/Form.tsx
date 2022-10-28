@@ -9,7 +9,7 @@ const Form = () => {
   const { getNftContract, getNftData, getNftLogo, status, tokenURI, imageURL } = nftCtx;
 
   const checkCtx = useContext(CheckContext)!;
-  const { checkIsVerified, checkNftSource } = checkCtx;
+  const { checkIsVerified, checkNftSource, checkRelevance } = checkCtx;
 
   const [input, setInput] = useState<string>('');
 
@@ -30,6 +30,7 @@ const Form = () => {
       checkIsVerified(status);
       checkNftSource(tokenURI, 'metadata');
       checkNftSource(imageURL, 'media');
+      checkRelevance(input);
     }
   }, [status, tokenURI, imageURL]); 
 
