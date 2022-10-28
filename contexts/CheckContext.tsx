@@ -11,12 +11,14 @@ type Source = {
 
 export interface CheckContextInterface {
   isVerified: boolean | undefined,
+  isRenounced: boolean | undefined,
   nftSource: Source | undefined,
-  isSpam: boolean | undefined,
+  isRelevant: boolean | undefined,
   setIsVerified: Dispatch<SetStateAction<boolean | undefined>>,
   checkIsVerified: (status: string) => void,
+  checkOwnership: (contract: ethers.Contract) => void,
   checkNftSource: (URI: string, type: string) => void,
-  checkRelevance: (address: string) => void,
+  checkSpam: (address: string) => void,
 }
 
 export const CheckContext = createContext<CheckContextInterface | null>(null);
@@ -28,8 +30,9 @@ type CheckProviderProps = {
 export const CheckProvider = ({ children }: CheckProviderProps) => {
 
   const [isVerified, setIsVerified] = useState<boolean>();
+  const [isRenounced, setIsRenounced] = useState<boolean>();
   const [nftSource, setNftSource] = useState<Source>();
-  const [isSpam, setIsSpam] = useState<boolean>();
+  const [isRelevant, setIsRelevant] = useState<boolean>();
   const sources = ['ipfs', 'arweave', 'data:'];
 
   const checkIsVerified = (status: string) => {
@@ -37,6 +40,15 @@ export const CheckProvider = ({ children }: CheckProviderProps) => {
       setIsVerified(true);
     } else {
       setIsVerified(false);
+    }
+  }
+
+  const checkOwnership = async (contract: ethers.Contract) => {
+    const owner = await contract.owner();
+    if (owner === ethers.constants.AddressZero) {
+      setIsRenounced(true);
+    } else {
+      setIsRenounced(false);
     }
   }
 
@@ -72,24 +84,26 @@ export const CheckProvider = ({ children }: CheckProviderProps) => {
     }
   }
 
-  const checkRelevance = async (address: string) => {
+  const checkSpam = async (address: string) => {
     const settings = {
       apiKey: process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_API_KEY,
       network: Network.ETH_MAINNET
     }
     const alchemy = new Alchemy(settings);
     const isSpam = await alchemy.nft.isSpamContract(address);
-    setIsSpam(isSpam);
+    setIsRelevant(!isSpam);
   }
 
   const providerValue = {
     isVerified,
+    isRenounced,
     nftSource,
-    isSpam,
+    isRelevant,
     setIsVerified,
+    checkOwnership,
     checkIsVerified,
     checkNftSource,
-    checkRelevance,
+    checkSpam,
   }
 
   return (

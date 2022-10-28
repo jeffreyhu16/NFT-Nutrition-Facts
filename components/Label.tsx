@@ -10,8 +10,19 @@ const Label = () => {
   const { collection, logoURL } = nftCtx;
 
   const checkCtx = useContext(CheckContext)!;
-  const { isVerified, nftSource, isSpam } = checkCtx;
-  // console.log(nftSource)
+  const { isVerified, isRenounced, nftSource, isRelevant } = checkCtx;
+
+  const matchCondition = (condition: boolean | undefined) => {
+    switch (condition) {
+      case true:
+        return '/green-check.svg';
+      case false:
+        return '/red-cross.svg';
+      case undefined:
+        return '/white-check.svg';
+    }
+  }
+
   return (
     <div className={styles.container}>
       <h1 className={styles.header}>NFT Nutrition Facts</h1>
@@ -21,52 +32,60 @@ const Label = () => {
       </div>
       <div className={styles.content}>
         <div className={styles.contentCheck}>
-          <h3>Contract Verification</h3>
-          {isVerified !== undefined &&
-            <Image
-              src={isVerified ? '/green-check.svg' : '/red-cross.svg'}
-              width={26}
-              height={26}
-            />
-          }
-        </div>
-        <div className={styles.contentCheck}>
-          <h3>Contract Ownership</h3>
+          <div className={styles.checkHeadGroup}>
+            <h3 className={styles.checkHead}>Contract Verification</h3>
+            <Image src='/info.png' width={18} height={18} />
+          </div>
           <Image
-            src='/red-cross.svg'
+            src={matchCondition(isVerified)}
             width={26}
             height={26}
           />
         </div>
         <div className={styles.contentCheck}>
-          <h3>Metadata Storage</h3>
-          {nftSource?.metadata &&
-            <Image
-              src={nftSource.metadata.isSecure ? '/green-check.svg' : '/red-cross.svg'}
-              width={26}
-              height={26}
-            />
-          }
+          <div className={styles.checkHeadGroup}>
+            <h3 className={styles.checkHead}>Contract Ownership</h3>
+            <Image src='/info.png' width={18} height={18} />
+          </div>
+          <Image
+            src={matchCondition(isRenounced)}
+            width={26}
+            height={26}
+          />
+
         </div>
         <div className={styles.contentCheck}>
-          <h3>Media Storage</h3>
-          {nftSource?.media &&
-            <Image
-              src={nftSource.media.isSecure ? '/green-check.svg' : '/red-cross.svg'}
-              width={26}
-              height={26}
-            />
-          }
+          <div className={styles.checkHeadGroup}>
+            <h3 className={styles.checkHead}>Metadata Storage</h3>
+            <Image src='/info.png' width={18} height={18} />
+          </div>
+          <Image
+            src={matchCondition(nftSource?.metadata.isSecure)}
+            width={26}
+            height={26}
+          />
         </div>
         <div className={styles.contentCheck}>
-          <h3>Relevance</h3>
-          {isSpam !== undefined &&
-            <Image
-              src={isSpam ? '/red-cross.svg' : '/green-check.svg'}
-              width={26}
-              height={26}
-            />
-          }
+          <div className={styles.checkHeadGroup}>
+            <h3 className={styles.checkHead}>Media Storage</h3>
+            <Image src='/info.png' width={18} height={18} />
+          </div>
+          <Image
+            src={matchCondition(nftSource?.media.isSecure)}
+            width={26}
+            height={26}
+          />
+        </div>
+        <div className={styles.contentCheck}>
+          <div className={styles.checkHeadGroup}>
+            <h3 className={styles.checkHead}>Relevance</h3>
+            <Image src='/info.png' width={18} height={18} />
+          </div>
+          <Image
+            src={matchCondition(isRelevant)}
+            width={26}
+            height={26}
+          />
         </div>
       </div>
     </div>

@@ -6,10 +6,23 @@ import styles from '../styles/Form.module.css'
 const Form = () => {
 
   const nftCtx = useContext(NftContext)!;
-  const { getNftContract, getNftData, getNftLogo, status, tokenURI, imageURL } = nftCtx;
+  const {
+    getNftContract,
+    getNftData,
+    getNftLogo,
+    status,
+    contract,
+    tokenURI,
+    imageURL
+  } = nftCtx;
 
   const checkCtx = useContext(CheckContext)!;
-  const { checkIsVerified, checkNftSource, checkRelevance } = checkCtx;
+  const {
+    checkIsVerified,
+    checkOwnership,
+    checkNftSource,
+    checkSpam
+  } = checkCtx;
 
   const [input, setInput] = useState<string>('');
 
@@ -25,14 +38,15 @@ const Form = () => {
     getNftLogo(input);
   }
 
-  useEffect(() => { 
-    if (status && tokenURI && imageURL) {
+  useEffect(() => {
+    if (status && contract && tokenURI && imageURL) {
       checkIsVerified(status);
+      checkOwnership(contract);
       checkNftSource(tokenURI, 'metadata');
       checkNftSource(imageURL, 'media');
-      checkRelevance(input);
+      checkSpam(input);
     }
-  }, [status, tokenURI, imageURL]); 
+  }, [status, contract, tokenURI, imageURL]);
 
   return (
     <form
