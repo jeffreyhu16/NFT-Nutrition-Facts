@@ -1,6 +1,6 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react'
 import { Network, Alchemy } from 'alchemy-sdk'
-import { ethers } from 'ethers';
+import { ethers } from 'ethers'
 
 export interface NftContextInterface {
   contract: ethers.Contract | undefined,
