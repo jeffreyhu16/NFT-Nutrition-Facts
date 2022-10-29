@@ -65,9 +65,17 @@ const Label = () => {
 
   const verifyInfo = matchMsg('isVerified', isVerified);
   const renounceInfo = matchMsg('isRenounced', isRenounced);
-  const metadataInfo = matchMsg('metadata', nftSource?.metadata.isSecure);
-  const mediaInfo = matchMsg('media', nftSource?.media.isSecure);
-  const spamInfo = matchMsg('isRelevant', isRelevant)
+  const spamInfo = matchMsg('isRelevant', isRelevant);
+
+  let metadataInfo = matchMsg('metadata', nftSource?.metadata.isSecure);
+  if (nftSource?.metadata) {
+    metadataInfo = metadataInfo.replace('_', nftSource.metadata.src);
+  }
+
+  let mediaInfo = matchMsg('media', nftSource?.media.isSecure);
+  if (nftSource?.media) {
+    mediaInfo = mediaInfo.replace('_', nftSource.media.src);
+  }
 
   return (
     <div className={styles.container}>
