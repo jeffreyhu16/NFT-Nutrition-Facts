@@ -70,7 +70,6 @@ export const NftProvider = ({ children }: NftProviderProps) => {
       setCollection(`${contract.name} (${contract.symbol})`);
       setImageURL(rawMetadata?.image)
       setTokenURI(tokenUri?.raw);
-      console.log(nft)
       
     } catch (err) {
       console.log(err);

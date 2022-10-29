@@ -36,9 +36,37 @@
 
 .checkHeadGroup {
   display: flex;
-  align-items: center;
 }
 
 .checkHead {
   margin-right: 0.3em;
+}
+
+.infoBox {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: default;
+}
+
+.infoBox::before {
+  content: attr(data-msg);
+  opacity: 0;
+  pointer-events: none;
+  font-size: 0.8rem;
+  position: absolute;
+  left: 50%;
+  bottom: 1.2rem;
+  transform: translateX(-50%);
+  max-width: 13rem;
+  padding: 0.6em 1.2em;
+  border-radius: 0.3rem;
+  box-shadow: 0 0 1rem 0 #1b1b1b;
+  background-image: var(--clr-purple);
+}
+
+.infoBox:hover::before {
+  opacity: 1;
+  bottom: 1.8rem;
+  transition: ease 200ms;
 }
