@@ -10,10 +10,12 @@ type Source = {
 }
 
 export interface CheckContextInterface {
+  isLoading: boolean,
   isVerified: boolean | undefined,
   isRenounced: boolean | null | undefined,
   nftSource: Source | undefined,
   isRelevant: boolean | null | undefined,
+  setIsLoading: Dispatch<SetStateAction<boolean>>,
   checkIsVerified: (status: string) => void,
   checkOwnership: (contract: ethers.Contract | null) => void,
   checkNftSource: (URI: string, type: string) => void,
@@ -31,6 +33,7 @@ export const CheckProvider = ({ children }: CheckProviderProps) => {
   const nftCtx = useContext(NftContext)!;
   const { network, getAlchemy } = nftCtx;
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<boolean>();
   const [isRenounced, setIsRenounced] = useState<boolean | null>();
   const [nftSource, setNftSource] = useState<Source>();
@@ -104,10 +107,12 @@ export const CheckProvider = ({ children }: CheckProviderProps) => {
   }
 
   const providerValue = {
+    isLoading,
     isVerified,
     isRenounced,
     nftSource,
     isRelevant,
+    setIsLoading,
     checkOwnership,
     checkIsVerified,
     checkNftSource,

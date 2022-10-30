@@ -18,6 +18,7 @@ const Form = () => {
 
   const checkCtx = useContext(CheckContext)!;
   const {
+    setIsLoading,
     checkIsVerified,
     checkOwnership,
     checkNftSource,
@@ -33,6 +34,7 @@ const Form = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setIsLoading(true);
     getNftContract(input);
     getNftData(input);
     getNftLogo(input);
@@ -45,7 +47,7 @@ const Form = () => {
       tokenURI === undefined ||
       imageURL === undefined
     ) return;
-
+    
     checkIsVerified(status);
     checkOwnership(contract);
     checkNftSource(tokenURI, 'metadata');
