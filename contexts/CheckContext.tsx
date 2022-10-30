@@ -1,5 +1,5 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react'
-import { Alchemy, Network } from 'alchemy-sdk'
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react'
+import { NftContext } from './NftContext'
 import { ethers } from 'ethers'
 
 type Source = {
@@ -11,12 +11,11 @@ type Source = {
 
 export interface CheckContextInterface {
   isVerified: boolean | undefined,
-  isRenounced: boolean | undefined,
+  isRenounced: boolean | null | undefined,
   nftSource: Source | undefined,
-  isRelevant: boolean | undefined,
-  setIsVerified: Dispatch<SetStateAction<boolean | undefined>>,
+  isRelevant: boolean | null | undefined,
   checkIsVerified: (status: string) => void,
-  checkOwnership: (contract: ethers.Contract) => void,
+  checkOwnership: (contract: ethers.Contract | null) => void,
   checkNftSource: (URI: string, type: string) => void,
   checkSpam: (address: string) => void,
 }
@@ -29,10 +28,13 @@ type CheckProviderProps = {
 
 export const CheckProvider = ({ children }: CheckProviderProps) => {
 
+  const nftCtx = useContext(NftContext)!;
+  const { network, getAlchemy } = nftCtx;
+
   const [isVerified, setIsVerified] = useState<boolean>();
-  const [isRenounced, setIsRenounced] = useState<boolean>();
+  const [isRenounced, setIsRenounced] = useState<boolean | null>();
   const [nftSource, setNftSource] = useState<Source>();
-  const [isRelevant, setIsRelevant] = useState<boolean>();
+  const [isRelevant, setIsRelevant] = useState<boolean | null>();
   const sources = ['ipfs', 'arweave', 'data:'];
 
   const checkIsVerified = (status: string) => {
@@ -43,12 +45,18 @@ export const CheckProvider = ({ children }: CheckProviderProps) => {
     }
   }
 
-  const checkOwnership = async (contract: ethers.Contract) => {
-    const owner = await contract.owner();
-    if (owner === ethers.constants.AddressZero) {
-      setIsRenounced(true);
-    } else {
-      setIsRenounced(false);
+  const checkOwnership = async (contract: ethers.Contract | null) => {
+    if (contract === null) { setIsRenounced(null); return }
+    try {
+      const owner = await contract.owner();
+      if (owner === ethers.constants.AddressZero) {
+        setIsRenounced(true);
+      } else {
+        setIsRenounced(false);
+      }
+    } catch (err) {
+      setIsRenounced(null);
+      console.log(err);
     }
   }
 
@@ -85,11 +93,12 @@ export const CheckProvider = ({ children }: CheckProviderProps) => {
   }
 
   const checkSpam = async (address: string) => {
-    const settings = {
-      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_API_KEY,
-      network: Network.ETH_MAINNET
+    // isSpamContract is only supported on mainnet
+    if (network !== 'eth-mainnet') {
+      setIsRelevant(null);
+      return;
     }
-    const alchemy = new Alchemy(settings);
+    const alchemy = getAlchemy();
     const isSpam = await alchemy.nft.isSpamContract(address);
     setIsRelevant(!isSpam);
   }
@@ -99,7 +108,6 @@ export const CheckProvider = ({ children }: CheckProviderProps) => {
     isRenounced,
     nftSource,
     isRelevant,
-    setIsVerified,
     checkOwnership,
     checkIsVerified,
     checkNftSource,

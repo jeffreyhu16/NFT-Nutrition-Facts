@@ -41,22 +41,25 @@ const Label = () => {
     status = 'complete';
   }
 
-  const matchMsg = (check: string, condition: boolean | undefined) => {
+  const matchMsg = (check: string, condition: boolean | null | undefined) => {
     switch (condition) {
       case true:
         return infoData[check as InfoData].pass;
       case false:
         return infoData[check as InfoData].fail;
+      case null:
+        return infoData[check as InfoData].null;
       case undefined:
         return infoData[check as InfoData].incomplete;
     }
   }
 
-  const matchIcon = (condition: boolean | undefined) => {
+  const matchIcon = (condition: boolean | null | undefined) => {
     switch (condition) {
       case true:
         return '/green-check.svg';
       case false:
+      case null:
         return '/red-cross.svg';
       case undefined:
         return '/white-check.svg';

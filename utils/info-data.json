@@ -2,26 +2,31 @@
   "isVerified": {
     "incomplete": "Checks if contract source code has been verified.",
     "pass": "Contract source code has been verified.",
-    "fail": "Contract source code has not been verified."
+    "fail": "Contract source code has not been verified.",
+    "null": ""
   },
   "isRenounced": {
     "incomplete": "Checks if contract ownership has been renounced.",
     "pass": "Contract ownership has been renounced.",
-    "fail": "Contract ownership has not been renounced."
+    "fail": "Contract ownership has not been renounced.",
+    "null": "Contract ownership cannot be determined."
   },
   "metadata": {
     "incomplete": "Checks the NFT collection's metadata source.",
     "pass": "Metadata has been securely stored on _.",
-    "fail": "Metadata has been stored on _."
+    "fail": "Metadata has been stored on _.",
+    "null": ""
   },
   "media": {
     "incomplete": "Checks the NFT collection's media source.",
     "pass": "Media file has been securely stored on _.",
-    "fail": "Media file has been stored on _."
+    "fail": "Media file has been stored on _.",
+    "null": ""
   },
   "isRelevant": {
     "incomplete": "Checks if contract has been classified as spam.",
     "pass": "Contract has not been classified as spam.",
-    "fail": "Contract has been classified as spam."
+    "fail": "Contract has been classified as spam.",
+    "null": "Contract relevance cannot be determined."
   }
 }

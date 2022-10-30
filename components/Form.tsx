@@ -39,13 +39,19 @@ const Form = () => {
   }
 
   useEffect(() => {
-    if (status && contract && tokenURI && imageURL) {
-      checkIsVerified(status);
-      checkOwnership(contract);
-      checkNftSource(tokenURI, 'metadata');
-      checkNftSource(imageURL, 'media');
-      checkSpam(input);
-    }
+    if (
+      status === undefined ||
+      contract === undefined || 
+      tokenURI === undefined ||
+      imageURL === undefined
+    ) return;
+
+    checkIsVerified(status);
+    checkOwnership(contract);
+    checkNftSource(tokenURI, 'metadata');
+    checkNftSource(imageURL, 'media');
+    checkSpam(input);
+    
   }, [status, contract, tokenURI, imageURL]);
 
   return (
