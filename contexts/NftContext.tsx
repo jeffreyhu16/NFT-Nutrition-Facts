@@ -3,12 +3,14 @@ import { Network, Alchemy } from 'alchemy-sdk'
 import { ethers } from 'ethers'
 
 export interface NftContextInterface {
+  network: Network,
   contract: ethers.Contract | undefined,
   status: string,
   collection: string | undefined,
   logoURL: string | undefined,
   imageURL: string | undefined,
   tokenURI: string | undefined,
+  setNetwork: Dispatch<SetStateAction<Network>>,
   setCollection: Dispatch<SetStateAction<string | undefined>>,
   setLogoURL: Dispatch<SetStateAction<string | undefined>>,
   setImageURL: Dispatch<SetStateAction<string | undefined>>,
@@ -26,6 +28,7 @@ type NftProviderProps = {
 
 export const NftProvider = ({ children }: NftProviderProps) => {
 
+  const [network, setNetwork] = useState<Network>(Network.ETH_MAINNET);
   const [contract, setContract] = useState<ethers.Contract>();
   const [status, setStatus] = useState<string>('');
 
@@ -59,9 +62,10 @@ export const NftProvider = ({ children }: NftProviderProps) => {
 
   const getNftData = async (address: string) => {
     try {
+      const net = network?.toUpperCase().replace('-','_');
       const settings = {
-        apiKey: process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_API_KEY,
-        network: Network.ETH_MAINNET
+        network,
+        apiKey: process.env[`NEXT_PUBLIC_ALCHEMY_${net}_API_KEY`],
       }
       const alchemy = new Alchemy(settings);
       const nft = await alchemy.nft.getNftMetadata(address, '1');
@@ -105,12 +109,14 @@ export const NftProvider = ({ children }: NftProviderProps) => {
   }
 
   const providerValue = {
+    network,
     contract,
     status,
     collection,
     logoURL,
     imageURL,
     tokenURI,
+    setNetwork,
     setCollection,
     setLogoURL,
     setImageURL,
