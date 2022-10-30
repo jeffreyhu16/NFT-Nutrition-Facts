@@ -4,11 +4,55 @@
   padding: 2.4em 3em;
 }
 
-.btn {
+.currentBtn {
+  display: flex;
+  align-items: center;
   font-size: 1.125rem;
-  font-weight: 600;
-  padding: 0.5em 2em;
-  border-radius: 3.25em;
-  background-image: var(--clr-texture);
+  font-weight: 500;
+  padding: 0.5em 1.2em;
+  border-radius: 3.25rem;
   border: 1px solid var(--clr-border);
+  background-image: var(--clr-texture);
+}
+
+.networkGroup {
+  position: relative;
+}
+
+.currentNetwork {
+  margin: 0 0.7em 0 0.5em;
+}
+
+.networkBox {
+  position: absolute;
+  right: 0;
+  width: 15rem;
+  padding: 0.4em;
+  border-radius: 0.8rem;
+  border: 1px solid var(--clr-border);
+  background-image: var(--clr-texture);
+}
+
+.networkBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 500;
+  width: 100%;
+  padding: 0.5em 0.4em;
+  border-radius: 0.7rem;
+}
+
+.networkBtn:hover {
+  background-color: #caa9ff14;
+}
+
+.networkBtnHead {
+  display: flex;
+  align-items: center;
+}
+
+.network {
+  margin-left: 0.7em;
 }
