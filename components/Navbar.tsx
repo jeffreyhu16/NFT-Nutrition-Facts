@@ -24,7 +24,7 @@ const Navbar = () => {
 
   return (
     <nav className={styles.container}>
-      <Image src='/logo.svg' priority={true} width={220} height={32} />
+      {/* <Image src='/logo.svg' priority={true} width={220} height={32} /> */}
       <div className={styles.networkGroup}>
         <button
           className={styles.currentBtn}
