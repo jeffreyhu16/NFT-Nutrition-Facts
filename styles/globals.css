@@ -1,6 +1,7 @@
 :root {
-  --clr-texture: linear-gradient(#77d6ff14, #caa9ff14);
   --clr-border: #ffffff1a;
+  --clr-texture: linear-gradient(#77d6ff14, #caa9ff14);
+  --clr-purple: linear-gradient(275deg, #7b00ff 5%, #881aff 90%);
 }
 
 *,
@@ -28,6 +29,7 @@ button {
   color: #fff;
   border: none;
   cursor: pointer;
+  padding: 0;
   background: transparent;
   font-family: 'Manrope', sans-serif;
 }
